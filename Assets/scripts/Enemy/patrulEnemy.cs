@@ -13,6 +13,7 @@ public class patrulEnemy : MonoBehaviour
 
     Transform player;
     public float stoppingDistance;
+    public float angryDistance;
     bool chill = false;
     bool angry = false;
     bool goBack = false;
@@ -35,15 +36,22 @@ public class patrulEnemy : MonoBehaviour
 
     void Start()
     {
-        for(int i = 0; i < DetectionData.IDs.Count;  i++)
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        _speed = speed;
+        Invoke(nameof(Delay), 0.1f);
+    }
+
+    private void Delay()
+    {
+        for (int i = 0; i < DetectionData.IDs.Count; i++)
         {
-            if(mobID == DetectionData.IDs[i])
+            if (mobID == DetectionData.IDs[i])
             {
                 left += DetectionData.LeftDetect[i];
                 right += DetectionData.RightDetect[i];
             }
         }
-        if(left - right < 0)
+        if (left - right < 0)
         {
             direction = direction.Right;
         }
@@ -55,9 +63,6 @@ public class patrulEnemy : MonoBehaviour
         {
             direction = (direction)Random.Range(0, 1.99f);
         }
-
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        _speed = speed;
     }
 
     void Update()
@@ -67,7 +72,7 @@ public class patrulEnemy : MonoBehaviour
         {
             chill = true;
         }
-        if(Vector2.Distance(transform.position, player.position) < stoppingDistance)
+        if(Vector2.Distance(transform.position, player.position) < angryDistance)
         {
             angry = true;
             chill = false;
@@ -113,11 +118,13 @@ public class patrulEnemy : MonoBehaviour
         float Range = transform.position.x - detectPlayerPosition.x;
         if(Range < 0)
         {
+            left++;
             DetectionData.LeftDetect.Add(1);
             DetectionData.RightDetect.Add(0);
         }
         else if(Range > 0)
         {
+            right++;
             DetectionData.RightDetect.Add(1);
             DetectionData.LeftDetect.Add(0);
         }
