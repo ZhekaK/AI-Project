@@ -18,7 +18,7 @@ public class player : MonoBehaviour
     public float checkRadius;
     public LayerMask whatIsGround;
     public GameObject map;
-    public float moveInputt;
+    public float jumpInput;
     
     public Text healthT;
     public Text coinsT;
@@ -100,14 +100,12 @@ public class player : MonoBehaviour
         {
             StopAllCoroutines();
             PlayerPrefs.DeleteAll();
-            StopAllCoroutines();
-            PlayerPrefs.DeleteAll();
+            return;
         }
         if (start)
         {
             save();
             moveInput = Input.GetAxis("Horizontal");
-            moveInputt = Input.GetAxis("Jump");
             rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
             if (Input.GetKeyDown(KeyCode.Mouse0) && !attack)
             {
@@ -122,8 +120,9 @@ public class player : MonoBehaviour
             {
                 Flip();
             }
+            jumpInput = Input.GetAxis("Jump");
             isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
-            if (isGrounded == true && moveInputt >= .5f)
+            if (isGrounded == true && jumpInput >= .5f)
             {
                 rb.velocity = Vector2.up * jumpForce;
                 anim.SetTrigger("takeOf");
@@ -446,17 +445,17 @@ public class player : MonoBehaviour
 
     public void OnTriggerStay2D(Collider2D other)
     {
-        if(other.gameObject.tag == "stairs" && moveInputt >= .5f)
+        if(other.gameObject.tag == "stairs" && jumpInput >= .5f)
         {
             jumpForce = 0;
             transform.position = new Vector2(transform.position.x, transform.position.y + 6.5f);
             jumpForce = temp;
         }
-        if(other.gameObject.tag == "down" && moveInputt <= -.7f)
+        if(other.gameObject.tag == "down" && jumpInput <= -.7f)
         {
             transform.position = new Vector2(transform.position.x, transform.position.y - 1.5f);
         }
-        if(other.gameObject.tag == "stairs2" && moveInputt >= .5f)
+        if(other.gameObject.tag == "stairs2" && jumpInput >= .5f)
         {
             jumpForce = 0;
             transform.position = new Vector2(transform.position.x, transform.position.y + 4f);
