@@ -6,33 +6,32 @@ public class patrulEnemy : MonoBehaviour
 {
     public float speed;
     private float _speed;
-    public float positionOfPatrul;
-    public Transform point;
-    bool moviengRight;
-    bool facingRight;
+    [SerializeField] private float positionOfPatrul;
+    [SerializeField] private Transform point;
+    private bool facingRight;
 
-    Transform player;
-    public float stoppingDistance;
-    public float angryDistance;
-    bool chill = false;
-    bool angry = false;
-    bool goBack = false;
+    private Transform player;
+    [SerializeField] private float stoppingDistance;
+    [SerializeField] private float angryDistance;
+    private bool chill = false;
+    private bool angry = false;
+    private bool goBack = false;
 
     private float oldPosition;
     private float movementDirection;
 
-    public bool running;
-    public Animator anim;
+    [SerializeField] private bool running;
+    [SerializeField] private Animator anim;
 
     [Space, Header("Debug")]
 
-    public Vector3 detectPlayerPosition;
-    public bool firstDetection = true;
+    [SerializeField] public Vector3 detectPlayerPosition;
+    [SerializeField] public bool firstDetection = true;
 
-    public int left = 0;
-    public int right = 0;
-    public direction direction;
-    [Space, SerializeField] private int mobID;
+    [SerializeField] public int left = 0;
+    [SerializeField] public int right = 0;
+    [SerializeField] public direction direction;
+    [Space] public int mobID;
 
     void Start()
     {
@@ -207,6 +206,11 @@ public class patrulEnemy : MonoBehaviour
             transform.position = Vector2.MoveTowards(transform.position, point.position, speed * Time.deltaTime);
             anim.SetBool("running", true);
         }    
+    }
+
+    private void OnDestroy()
+    {
+        firstDetection = true;
     }
     //void OnTriggerEnter2D(Collider2D other)
     //{

@@ -66,7 +66,7 @@ public class player : MonoBehaviour
     public int coins;
     public int weapon = 1;
     [Space]
-    [SerializeField] private bool RESET_GAME;
+    public bool RESET_GAME;
 
     Rigidbody2D rb;
     Animator anim;
@@ -100,6 +100,7 @@ public class player : MonoBehaviour
         {
             StopAllCoroutines();
             PlayerPrefs.DeleteAll();
+            Application.Quit();
             return;
         }
         if (start)
